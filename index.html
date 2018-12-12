@@ -26,6 +26,7 @@
                     <a href="?/table-data">Tables</a>
                     <a href="?/permission-data">Permissions</a>
                     <a href="?/permission-check">Permission check</a>
+                    <a href="?/myaccount">Myaccount</a>
                     <a id=vm_signin onclick="$vm.signin();"><i class="fa fa-user"></i> Sign In</a>
                     <a class=vm-hide id=vm_signout onclick=$vm.signout()><i class="fa fa-user"></i> Sign Out</a>
                 </div>
@@ -93,11 +94,13 @@
            })
         }
         //------------------------------------
+        /*
         $vm.menu_click=function(href){
             href=href.replace('?\/','');
             href=href.replace(/\//g,'_');
             $vm.load_module(href,$vm.root_layout_content_slot,{});
         }
+        */
         //------------------------------------
         $vm.show=function(id){
             $vm.active_id=id;
@@ -198,6 +201,12 @@
         $vm.menu_click=function(href){
             href=href.replace('?\/','');
             href=href.replace(/\//g,'_');
+            if($vm.user_name=="guest"){
+                if(href=='table-data' || href=='permission-data' || href=='myaccount'){
+                    alert("Login first please.");
+                    return;
+                }
+            }
             $vm.load_module(href,$vm.root_layout_content_slot,{});
         }
         //------------------------------------
