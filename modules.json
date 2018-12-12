@@ -1,11 +1,11 @@
 {
 	"modules":
 	{
-		"home":                 {"url":"https://wappsystem.github.io/backoffice/modules/system/home.html"},
-		"table-data":           {"url":"https://wappsystem.github.io/backoffice/modules/data/table-data.html","form_module":"table-form"},
-		"table-form":           {"url":"https://wappsystem.github.io/backoffice/modules/data/table-form.html"},
-		"permission-data":      {"url":"https://wappsystem.github.io/backoffice/modules/data/permission-data.html","form_module":"permission-form"},
-		"permission-form":      {"url":"https://wappsystem.github.io/backoffice/modules/data/permission-form.html"},
-		"permission-check":		{"url":"https://wappsystem.github.io/backoffice/modules/data/permission-check.html"}
+		"home":                 {"url":"https://backoffice.wappsystem.com.au/modules/system/home.html"},
+		"table-data":           {"url":"https://backoffice.wappsystem.com.au/modules/data/table-data.html","form_module":"table-form"},
+		"table-form":           {"url":"https://backoffice.wappsystem.com.au/modules/data/table-form.html"},
+		"permission-data":      {"url":"https://backoffice.wappsystem.com.au/modules/data/permission-data.html","form_module":"permission-form"},
+		"permission-form":      {"url":"https://backoffice.wappsystem.com.au/modules/data/permission-form.html"},
+		"permission-check":		{"url":"https://backoffice.wappsystem.com.au/modules/data/permission-check.html"}
 	}
 }
