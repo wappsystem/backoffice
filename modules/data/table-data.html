@@ -42,17 +42,16 @@
 
         };
         var fields="App,Table";
-        m.fields="_Form,"+fields+",Submit_date,Submitted_by,_Delete";
+        m.fields="_Form,"+fields+",Submit_date,Submitted_by,Private,_Delete";
         m.form_fields=fields;
         //-------------------------------------
         m.cell_render=function(records,I,field,td){
-            /*
             switch(field){
-                case 'DOB':
-                    td.html(records[I].data.DOB+"aaa");
+                case 'Private':
+                    //var html='<input type=checkbox />';
+                    td.html('No');
                     break;
             }
-            */
         }
         //-------------------------------------
     }
