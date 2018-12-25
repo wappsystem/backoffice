@@ -37,31 +37,31 @@
         </div>
     </body>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.2.1.min.js"></script>
-    <script main>
+    <script main-code>
         //------------------------------------
-        $vm={};$vm.ver=[0.08,0.01];
+        $vm={};$vm.ver=[0.09,0.09];
         $vm.start_time=new Date().getTime();
         $vm.api_address="https://api.wappsystem.com";
-        //$vm.api_address="https://api.wappsystem.com:3000"; //for development
-        //$vm.vm_router=1;
+        if(window.location.toString().indexOf('_p=1')!=-1) $vm.api_address="https://api.wappsystem.com:3000";
         if(window.location.hostname=='127.0.0.1' || window.location.hostname=='localhost') $vm.localhost=true;
         //------------------------------------
-        $vm.module_links=[
-            "https://backoffice.wappsystem.com.au/modules.json",
-        ];
         $vm.module_list={
-            "home":                 {"url":"https://backoffice.wappsystem.com.au/modules/system/home.html"},
+            "home":                 {"url":"$A/h/home.html"},
+            "frame":                {"url":"$A/f/frame.html"},
+            "myaccount":		    {"url":"$A/m/myaccount.html"},
+            "permission-data":      {"url":"$A/p/permission-data.html","form_module":"permission-form"},
+    		"permission-form":      {"url":"$A/p/permission-form.html"},
+    		"permission-check":		{"url":"$A/p/permission-check.html"},
+    		"table-data":           {"url":"$A/t/table-data.html","form_module":"table-form"},
+    		"table-form":           {"url":"$A/t/table-form.html"},
         }
         //------------------------------------
         $vm.local_url=function(url){
-            var urlR=url;
-            if($vm.localhost==true){
-                urlR=urlR.replace('https://backoffice.wappsystem.com.au/','http://127.0.0.1:8000/wappsystem/backoffice/');
-            }
+            var urlR=url.replace("$A","https://backoffice.wappsystem.com.au/modules");
+            if($vm.localhost==true) urlR=urlR.replace('https://backoffice.wappsystem.com.au/modules','http://127.0.0.1:8000/wappsystem/backoffice/modules');
             return urlR;
         }
         //------------------------------------
-        for(p in $vm.module_links) $vm.module_links[p]=$vm.local_url($vm.module_links[p]);
         for(p in $vm.module_list) $vm.module_list[p].url=$vm.local_url($vm.module_list[p].url);
         //------------------------------------
         $vm.default_title="Backoffice";
@@ -95,14 +95,6 @@
            })
         }
         //------------------------------------
-        /*
-        $vm.menu_click=function(href){
-            href=href.replace('?\/','');
-            href=href.replace(/\//g,'_');
-            $vm.load_module(href,$vm.root_layout_content_slot,{});
-        }
-        */
-        //------------------------------------
         $vm.show=function(id){
             $vm.active_id=id;
             document.title=$vm.default_title;
@@ -121,7 +113,7 @@
         window.onresize=function(){set_height();}
         //------------------------------------
     </script>
-    <style main>
+    <style main-style>
         :root {
             --menu-color: #fff;
             --menu-hover-color: #29eca6;
@@ -175,7 +167,7 @@
         }
         /*----------------------*/
     </style>
-    <script menu>
+    <script menu-code>
         //------------------------------------
         $('.vm-dropdown').on('click',function(e){
             var d=$(this).find('.vm-dropdown-content');
@@ -212,7 +204,7 @@
         }
         //------------------------------------
     </script>
-    <style menu>
+    <style menu-style>
         /*menu*/
         #vm-menu {
             overflow: hidden;
@@ -351,19 +343,18 @@
             to {max-height: 1000px;}
         }
     </style>
-    <script boot>
+    <script frame-code>
         //------------------------------------
-        var apppath=window.location.href.substring(0, window.location.href.lastIndexOf('/')).split('\/?')[0];
-        var url1=apppath+"/modules/system/os.html";
+        var url1=$vm.module_list["frame"].url;
         var urls=[url1]; $vm.module_start_id=1;
         //---------------------------------------------
         $(urls).each(function(index,url){
-            var ver=localStorage.getItem(apppath+url+"ver");
-            var txt=localStorage.getItem(apppath+url+"txt");
+            var ver=localStorage.getItem(url+"ver");
+            var txt=localStorage.getItem(url+"txt");
             if(ver!=$vm.ver[0] || txt==null || $vm.localhost==true){
                 $.get(url+'?_='+new Date().getTime(),function(new_txt){
-                    localStorage.setItem(apppath+url+"txt",new_txt);
-                    localStorage.setItem(apppath+url+"ver",$vm.ver[0]);
+                    localStorage.setItem(url+"txt",new_txt);
+                    localStorage.setItem(url+"ver",$vm.ver[0]);
                     console.log('loading from url. '+url);
                     $('#content').append(new_txt.replace(/__ID/g,'_'+index));
                 },'text');
