@@ -1,4 +1,4 @@
-<div id=D__ID module=start>
+<div id=D__ID module=frame>
     <div system-html>
         <div top-right-corner id=top_right_corner_0 class='d-none d-xl-block'>
             <div>
@@ -28,37 +28,14 @@
         </div>
     </div>
     <script>
-        $vm._start=function(){
+        $vm._start_frame=function(){
             //------------------------------------------
             var data=''; for(var key in window.localStorage){ if(window.localStorage.hasOwnProperty(key)){ data+=window.localStorage[key]; }}
             if(data.length>3000000) localStorage.clear();
             //------------------------------------------
-            $vm.vm={}; $vm.version=$vm.ver[0]; $vm.reload='';
+            $vm.version=$vm.ver[0]; $vm.reload='';
             $vm.hosting_path=window.location.href.substring(0, window.location.href.split('?')[0].lastIndexOf('/'));
             $vm.debug_message=true; //show debug message in console
-            //------------------------------------------
-            /*
-            if($vm.default_production=='No'){
-                if(window.location.toString().indexOf('database=production')!=-1){
-                    $vm.server          ='production';
-                    $VmAPI.api_base     =$vm.api_path_production;
-                }
-                else{
-                    $vm.server          ='development';
-                    $VmAPI.api_base     =$vm.api_path_development;
-                }
-            }
-            else {
-                if(window.location.toString().indexOf('database=development')!=-1){
-                    $vm.server          ='development';
-                    $VmAPI.api_base     =$vm.api_path_development;
-                }
-                else{
-                    $vm.server          ='production';
-                    $VmAPI.api_base     =$vm.api_path_production;
-                }
-            }
-            */
             //------------------------------------------
             $vm.show_user=function(){
             	var third=""
@@ -110,15 +87,15 @@
                 $vm.resources=[
                     "https://use.fontawesome.com/releases/v5.3.1/css/all.css",
                     "https://use.fontawesome.com/releases/v5.3.1/css/v4-shims.css",
+                    "https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/themes/redmond/jquery-ui.css",
+                    "https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.min.js",
+                    "https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js",
                     /*?
                     //"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css",
-                    "https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/themes/redmond/jquery-ui.css",
                     "https://cdnjs.cloudflare.com/ajax/libs/react/16.4.1/umd/react.production.min.js",
                     "https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.1/umd/react-dom.production.min.js",
                     "https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js",
                     "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js",
-                    "https://maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js",
-                    "https://ajax.aspnetcdn.com/ajax/jquery.ui/1.12.1/jquery-ui.min.js",
                     "https://apis.google.com/js/plusone.js",
                     "https://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js",
                     "https://sdk.amazonaws.com/js/aws-sdk-2.1.34.min.js",
@@ -141,7 +118,6 @@
             }
             //------------------------------------
             $vm.alert=function(msg){
-              //$('#vm_alert_information div.modal-body').html( $('<div/>').html(msg).text() );
               $('#vm_alert_information div.modal-body').html( msg );
               $("#vm_alert_information").modal();
             }
@@ -150,7 +126,7 @@
               $('#vm_alert_information').modal('hide');
             }
             //------------------------------------
-            if($vm.server!='production') $('#vm_system_info').text((new Date().getTime()-$vm.start_time).toString()+"ms")
+            $('#vm_system_info').text((new Date().getTime()-$vm.start_time).toString()+"ms")
             $vm.app_module=1;
             //------------------------------------
             if(sessionStorage["signinout"]==1){
@@ -162,7 +138,6 @@
                 if(a.length==1) $vm.load_module("home",'',{});
                 else if(a.length==2){
                     $vm.search_module=a[1].split('&')[0].replace(/\//g,'_');
-                    //$vm.load_module_v2($vm.search_module,'',{});
                     //-------------------------------------
                     var I=0;
                     var loop=setInterval(function (){
@@ -178,102 +153,8 @@
                 }
             }
             //------------------------------------
-            var module_links=function(){
-                var rm=$vm.module_links;
-                if(rm==undefined) return;
-                var i=0
-                var N=rm.length;
-                //------------------------------------------
-                var load_url=function(url,next){
-                    if($vm.local_url!=undefined){
-                        url=$vm.local_url(url);
-                    }
-                    var storage_url=url;
-                    //------------------------------------------
-                    var ver=localStorage.getItem(storage_url+"_ver");
-                    var txt=localStorage.getItem(storage_url+"_txt");
-                    //------------------------------------------
-                    var http127_i=0; if(url.indexOf('http://127.0.0.1')!=-1 || url.indexOf('http://localhost')!=-1) http127_i=1;
-                    if(ver!=$vm.ver[0] || txt===null || $vm.reload!='' || http127_i==1){
-                        console.log((new Date().getTime()-$vm.start_time).toString()+' --- loading from url. '+url+" "+ver+"/"+$vm.version+" 127:"+http127_i+" re:"+$vm.reload)
-                        $.get(url+'?_='+$vm.ver[0]+$vm.reload,function(data){
-                            localStorage.setItem(storage_url+"_txt",data);
-                            localStorage.setItem(storage_url+"_ver",$vm.ver[0]);
-                            next(data);
-                        },'text');
-                    }
-                    else{
-                        console.log((new Date().getTime()-$vm.start_time).toString()+' --- loading from stotage. '+url+" "+ver+"/"+$vm.version+" 127:"+http127_i+" re:"+$vm.reload)
-                        next(txt);
-                    }
-                    //------------------------------------------
-                }
-                //------------------------------------------
-                var process=function(I,prefix,url){
-                    if(url.substring(0,4)!='http') url=$vm.hosting_path+"/"+url;
-                    load_url(url,function(txt){
-                        var config;
-                        try{ config=JSON.parse(txt);} catch (e){
-                            console.log(txt);
-                            alert(url+"\r\nError in config file\n"+e); return;
-                        }
-                        var modules=config.modules;
-                        var f=url.split('/').pop();
-                        var path=url.replace(f,'');
-                        for (var k in modules){
-                            if(modules[k].url!=undefined){
-                                if(modules[k].url.substring(0,4)=='http') path="";
-                                modules[k].url=path+modules[k].url;
-                                $vm.module_list[prefix+k]=modules[k];
-                                if($vm.local_url!=undefined){
-                                    $vm.module_list[prefix+k].url=$vm.local_url($vm.module_list[prefix+k].url);
-                                }
-                                if(modules[k].prefix==undefined) {
-                                    $vm.module_list[prefix+k].prefix=prefix;
-                                }
-                                //if($vm.search_module==(prefix+k)) $vm.load_module_v2($vm.search_module,'',{});
-                                var snm=modules[k]['name_for_search'];
-                                if(snm!=""){
-                                    if(snm==undefined) snm=prefix+k;
-                                    //$vm.website_module_list_for_search.push({label:snm,value:prefix+k})
-                                }
-                            }
-                            else{
-                                $vm.module_list[prefix+k]=modules[k];
-                            }
-                        }
-                        if(I==N-1){ //all module's link are ready
-                            if($vm.home_process!=undefined) $vm.home_process();
-                        }
-                    })
-                }
-                //------------------------------------------
-                if(N>0){
-                    var link_remote_module_loop=setInterval(function (){
-                        if(i>=N){
-                            clearInterval(link_remote_module_loop);
-                            return;
-                        }
-                        var ns=rm[i].split('|');
-                        if(ns.length==1) process(i,"",ns[0])
-                        else process(i,ns[0]+"_",ns[1]);
-                        i++;
-                    },10);
-                }
-            }
-            //------------------------------------
-            module_links();
-            //------------------------------------
         }
         //------------------------------------
-        $vm._I=0; $vm._boot=function(){
-            $vm._I++;
-            if($vm._I==1){
-                $vm._id=$vm.module_start_id-1;
-                $vm._start(); $vm.start();
-            }
-        }
-        //------------------------------------------
         $vm.url=function(text){
             text=text.replace(/__HOST__\//g,$vm.hosting_path+'/');
             text=text.replace(/__VER__/g,$vm.ver[0]);
@@ -285,11 +166,11 @@
             return text;
         }
         //---------------------------------------------
-        var url1=$vm.url("https://vm.vmiis.com/distribution/vm.js");
-        var urls=[url1];
-        //---------------------------------------------
-        var apppath=window.location.href.substring(0, window.location.href.lastIndexOf('/')).split('\/?')[0];
-        $(urls).each(function(index,url){
+        $vm._start=function(){
+            //---------------------------------------------
+            var url=$vm.url("https://vm.vmiis.com/distribution/vm.js");
+            //---------------------------------------------
+            var apppath=window.location.href.substring(0, window.location.href.lastIndexOf('/')).split('\/?')[0];
             var ver=localStorage.getItem(apppath+url+"ver");
             var txt=localStorage.getItem(apppath+url+"txt");
             if(ver!=$vm.ver[1] || txt==null || window.location.toString().indexOf('_d=1')!=-1){
@@ -298,17 +179,18 @@
                     localStorage.setItem(apppath+url+"ver",$vm.ver[1]);
                     console.log('loading from url. '+url+' '+ver+'/'+$vm.ver[1]);
                     $('head').append('<scr'+'ipt>'+new_txt+'</scr'+'ipt>');
-                    $vm._boot();
+                    $vm._start_frame();
+                    $vm.start();
                 },'text');
             }
             else{
                 console.log('loading from storage. '+url+' '+ver+'/'+$vm.ver[1]);
                 $('head').append('<scr'+'ipt>'+txt+'</scr'+'ipt>');
-                $vm._boot();
+                $vm._start_frame();
+                $vm.start();
             }
             //---------------------------------------------
-        })
-        //---------------------------------------------
+        }
     </script>
     <style>
         /*top right*/
