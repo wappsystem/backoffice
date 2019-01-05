@@ -18,6 +18,7 @@
                 <a href="?/table-data">Tables</a>
                 <a href="?/permission-data">Permissions</a>
                 <a href="?/permission-check">Permission check</a>
+                <a href="?/setup">Setup</a>
                 <a href="?/myaccount" id=myaccount__ID>My account</a>
                 <a id=vm_signin onclick="$vm.signin();"><i class="fa fa-user"></i> Sign In</a>
                 <a class=vm-hide id=vm_signout onclick=$vm.signout()><i class="fa fa-user"></i> Sign Out</a>
@@ -42,6 +43,7 @@
     		"table-form":           {"url":"$A/t/table-form.html"},
             "user-data":            {"url":"$A/u/user-data.html","form_module":"user-form"},
     		"user-form":            {"url":"$A/u/user-form.html"},
+    		"setup":                {"url":"$A/s/setup.html"},
         }
         //------------------------------------
         $vm.local_url=function(url){
