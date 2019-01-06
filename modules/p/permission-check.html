@@ -6,12 +6,6 @@
 		<div class="container">
 			<div class="row row__ID">
 				<div class=col>
-					<span>App</span>
-					<input type="text" class="form-control" name=App>
-				</div>
-			</div>
-			<div class="row row__ID">
-				<div class=col>
 					<span>Operation</span>
 					<select class="form-control" name=Operation>
 						<option>-</option>
@@ -55,9 +49,8 @@
 		//-------------------------------------
 		$('#submit__ID').on('click',function(){
 			var data=$vm.serialize('#F__ID');
-	        var record={Data:data}
-	        $vm.request({cmd:"permission-check",record:record},function(res){
-				$('#Result__ID').text(res.sys.result)
+	        $vm.request({cmd:"permission-check",data:data},function(res){
+				$('#Result__ID').text(res.result)
 	        });
 		})
 		//-------------------------------------
