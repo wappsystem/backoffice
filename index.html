@@ -16,7 +16,7 @@
     <script boot-up>
         //------------------------------------
         //change version if your modules have been modified
-        $vm={};$vm.ver=[0.23,0.23];
+        $vm={};$vm.ver=[0.28,0.28];
         //where are your frame and app modules
         $vm.module_list={
             "app":     {"url":"https://backoffice.wappsystem.com.au/app.html"},
@@ -29,10 +29,14 @@
             if($vm.localhost==true) urlR=url.replace('https://backoffice.wappsystem.com.au/','http://127.0.0.1:8000/wappsystem/backoffice/');
             return urlR;
         }
+        
+        
+        
+        
         //------------------------------------
         //Do not need to chang the following code in most cases
         //The following code will load a framework module and your application module
-        $vm.start_time=new Date().getTime();
+        $VmAPI={}; $vm.start_time=new Date().getTime();
         if(window.location.hostname=='127.0.0.1' || window.location.hostname=='localhost') $vm.localhost=true;
         for(p in $vm.module_list) $vm.module_list[p].url=$vm.local_debug_url($vm.module_list[p].url);
         //------------------------------------
