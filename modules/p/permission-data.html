@@ -9,6 +9,14 @@
         var fields="Name,Operation,Tables,Users";
         m.fields="_Form,"+fields+",Submit_date,Submitted_by,_Delete";
         //-------------------------------------
+        m.cell_render=function(records,I,field,td){
+            switch(field){
+                case 'Tables':
+                    td.html(records[I].Data[field].replace(/\n/,''));
+                    break;
+            }
+        }
+        //-------------------------------------
     }
 </script>
 <style>
