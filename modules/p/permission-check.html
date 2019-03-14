@@ -50,7 +50,9 @@
 		$('#submit__ID').on('click',function(){
 			var data=$vm.serialize('#F__ID');
 	        $vm.request({cmd:"permission-check",data:data},function(res){
-				$('#Result__ID').text(res.result)
+				var pp="No";
+				if(res.sys.tb=='on') pp="Yes";
+				$('#Result__ID').html(res.result+"<br>Private table:"+pp);
 	        });
 		})
 		//-------------------------------------
