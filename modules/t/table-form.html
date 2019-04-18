@@ -11,6 +11,12 @@
     					<input type="text" class="form-control" name=Table>
     				</div>
     			</div>
+    			<div class="row row__ID">
+    				<div class=col>
+    					<span>Group</span>
+    					<input type="text" class="form-control" name=Group>
+    				</div>
+    			</div>
                 <div class="row row__ID" id=builder__ID >
     				<div class=col>
                         <br>
@@ -29,7 +35,8 @@
     <script>
     	function F__ID(){
     		//-------------------------------------
-            VmInclude:__COMPONENT__/f/form-table.01.js
+            VmInclude:__COMPONENT__/f/form.01.js
+            m.cmd_type="table";
     		//-------------------------------------
             var load=m.load;
             m.load=function(){
@@ -43,5 +50,8 @@
     </script>
     <style>
         VmInclude:__COMPONENT__/f/form.01.css
+		#form_container__ID{
+			max-width:600px;
+		}
     </style>
 </div>
