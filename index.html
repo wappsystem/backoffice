@@ -16,43 +16,86 @@
     <script boot-up>
         //------------------------------------
         //change version if your modules have been modified
-        $vm={};$vm.ver=[0.30,0.28];
-        //where are your frame and app modules
-        $vm.module_list={
-            "app":     {"url":"https://backoffice.wappsystem.com.au/app.html"},
-            "frame":   {"url":"https://backoffice.wappsystem.com.au/modules/f/frame.html"},
-        }
+        $vm={};$vm.ver=[0.31,0.31];
         //------------------------------------
-        //for local debug
-        $vm.local_debug_url=function(url){
-            var urlR=url;
-            if($vm.localhost==true) urlR=url.replace('https://backoffice.wappsystem.com.au/','http://127.0.0.1:8000/wappsystem/backoffice/');
-            return urlR;
-        }
+        //app urls
+        $vm.public_url_$A='https://backoffice.wappsystem.com.au';
+        $vm.local_url_$A='http://127.0.0.1:8000/wappsystem/backoffice';
+        //------------------------------------
+        //where are your start modules
+        $vm.start_modules=[
+            "$A/app.html",              //app menu, title, footer etc
+            "$A/modules/f/frame.html",  //app frame work
+        ]
+        //------------------------------------
+        //modules used in this app
+        $vm.module_list={
+            //you can add modules here directly
+            "home":                 {"url":"$A/modules/h/home.html"},
+            "myaccount":		    {"url":"$A/modules/m/myaccount.html"},
+            "permission-data":      {"url":"$A/modules/p/permission-data.html","form_module":"permission-form"},
+    		"permission-form":      {"url":"$A/modules/p/permission-form.html"},
+    		"permission-check":		{"url":"$A/modules/p/permission-check.html"},
+    		"table-data":           {"url":"$A/modules/t/table-data.html","form_module":"table-form"},
+    		"table-form":           {"url":"$A/modules/t/table-form.html"},
+            "user-data":            {"url":"$A/modules/u/user-data.html","form_module":"user-form"},
+    		"user-form":            {"url":"$A/modules/u/user-form.html"},
+    		"setup":                {"url":"$A/modules/s/setup.html"},
+        };
+        //------------------------------------
+        //where are your all other modules
+        $vm.app_modules=[
+            //you can add a js file that will add mmodules to the $vm.module_list
+        ]
+        //------------------------------------
         
         
         
         
         //------------------------------------
         //Do not need to chang the following code in most cases
-        //The following code will load a framework module and your application module
-        $VmAPI={}; $vm.start_time=new Date().getTime();
-        if(window.location.hostname=='127.0.0.1' || window.location.hostname=='localhost') $vm.localhost=true;
-        for(p in $vm.module_list) $vm.module_list[p].url=$vm.local_debug_url($vm.module_list[p].url);
+        //The following code will load a framework module and your application modules
         //------------------------------------
-        $vm._I=0; $vm._boot=function(){
+        $VmAPI={};$vm.start_time=new Date().getTime();
+        //------------------------------------
+        $vm.root_layout_header='header';
+        $vm.root_layout_content_slot='content'
+        $vm.root_layout_footer='footer';
+        //---------------------------------------------
+        //replace the url
+        $vm.replace_url=function(url){
+            var urlR=url.replace("$A",$vm.public_url_$A);
+            if($vm.localhost==true) urlR=urlR.replace($vm.public_url_$A,$vm.local_url_$A);
+            return urlR;
+        }
+        //------------------------------------
+        if(window.location.hostname=='127.0.0.1' || window.location.hostname=='localhost') $vm.localhost=true;
+        for(p in $vm.start_modules) $vm.start_modules[p]=$vm.replace_url($vm.start_modules[p]);
+        for(p in $vm.app_modules) $vm.app_modules[p]=$vm.replace_url($vm.app_modules[p]);
+        //------------------------------------
+        $vm._I=0; $vm._N=$vm.start_modules.length;//+$vm.app_modules.length;
+        $vm._boot=function(){
             $vm._I++;
-            if($vm._I==2){
+            if($vm._I==$vm._N){
+                for(p in $vm.module_list) $vm.module_list[p].url=$vm.replace_url($vm.module_list[p].url);
+                console.log("build in module list  "+(new Date().getTime()-$vm.start_time)+'ms');
                 $vm._start();
             }
         }
         //------------------------------------------
-        var url1=$vm.module_list["app"].url;
-        var url2=$vm.module_list["frame"].url;
-        var urls=[url1,url2]; $vm._id=2;
+        $vm._J=0; $vm._JN=$vm.app_modules.length;
+        $vm._boot2=function(){
+            $vm._J++;
+            if($vm._J==$vm._JN){
+                for(p in $vm.module_list) $vm.module_list[p].url=$vm.replace_url($vm.module_list[p].url);
+                console.log("app module list  "+(new Date().getTime()-$vm.start_time)+'ms');
+            }
+        }
+        //------------------------------------------
+        $vm._id=2;
         //---------------------------------------------
         var apppath=window.location.href.substring(0, window.location.href.lastIndexOf('/')).split('\/?')[0];
-        $(urls).each(function(index,url){
+        $($vm.start_modules).each(function(index,url){
             var ver=localStorage.getItem(apppath+url+"ver");
             var txt=localStorage.getItem(apppath+url+"txt");
             if(ver!=$vm.ver[0] || txt==null || $vm.localhost==true){
@@ -65,11 +108,36 @@
                 },'text');
             }
             else{
-                console.log('loading from storage. '+url);
+                console.log('loading from storage. '+url+' '+ver+'/'+$vm.ver[0]);
                 $('#content').append(txt.replace(/__ID/g,'_'+(index+1)));
                 $vm._boot();
             }
         })
+        //---------------------------------------------
+        setTimeout(function (){
+            var T=0;
+            $($vm.app_modules).each(function(index,url){
+                T+=10;
+                setTimeout(function (){
+                    var ver=localStorage.getItem(apppath+url+"ver");
+                    var txt=localStorage.getItem(apppath+url+"txt");
+                    if(ver!=$vm.ver[0] || txt==null || $vm.localhost==true){
+                        $.get(url+'?_='+new Date().getTime(),function(new_txt){
+                            localStorage.setItem(apppath+url+"txt",new_txt);
+                            localStorage.setItem(apppath+url+"ver",$vm.ver[0]);
+                            console.log('loading from url. '+url);
+                            eval(new_txt);
+                            //$vm._boot2();
+                        },'text');
+                    }
+                    else{
+                        console.log('loading from storage. '+url+' '+ver+'/'+$vm.ver[0]);
+                        eval(txt);
+                        //$vm._boot2();
+                    }
+                },10+T);
+            })
+        },10);
         //---------------------------------------------
     </script>
 </html>
