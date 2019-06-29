@@ -22,6 +22,7 @@
             <!-- menu -->
             <div menu id="vm-menu" class="vm-m-hide">
                 <a href="?/home"><i class="fa fa-home"></i> Home</a>
+                <a href="?/email-title-data" id=email-title-data__ID >Email Title</a>
                 <a href="?/user-data" id=user-data__ID >Users</a>
                 <a href="?/table-data">Tables</a>
                 <a href="?/permission-data">Permissions</a>
@@ -91,10 +92,12 @@
                $vm.init_status=1;
                $vm.show_user();
                if($vm.user_name=="builder"){
+                   $('#email-title-data__ID').show();
                    $('#user-data__ID').show();
                    $('#myaccount__ID').hide();
                }
                else{
+                   $('#email-title-data__ID').hide();
                    $('#user-data__ID').hide();
                    $('#myaccount__ID').show();
                }
