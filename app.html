@@ -214,7 +214,7 @@
         $('#vm-menu a').on('click',function(e){
             e.preventDefault();
             var href=$(this).attr('href');
-            if(href.substring(0,8)=="https://"){ window.open(href); return;}
+            if(href!=undefined && href.substring(0,8)=="https://"){ window.open(href); return;}
             if(href!=undefined && href!=''){
                 if($vm.menu_click!=undefined) $vm.menu_click(href);
             }
