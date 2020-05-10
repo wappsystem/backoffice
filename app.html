@@ -29,6 +29,7 @@
                 <a href="?/permission-check">Permission check</a>
                 <a href="?/setup">Setup</a>
                 <a href="?/myaccount" id=myaccount__ID>My account</a>
+                <a href="?/log" id=log__ID >Logs</a>
                 <a id=vm_signin onclick="$vm.signin();"><i class="fa fa-user"></i> Sign In</a>
                 <a class=vm-hide id=vm_signout onclick=$vm.signout()><i class="fa fa-user"></i> Sign Out</a>
             </div>
@@ -95,11 +96,13 @@
                if($vm.user_name=="builder"){
                    $('#email-title-data__ID').show();
                    $('#user-data__ID').show();
+                   $('#log__ID').show();
                    $('#myaccount__ID').hide();
                }
                else{
                    $('#email-title-data__ID').hide();
                    $('#user-data__ID').hide();
+                   $('#log__ID').hide();
                    $('#myaccount__ID').show();
                }
            })
